@@ -1,20 +1,34 @@
 import React from 'react';
-import {Image, Text, StyleSheet, View} from 'react-native';
+import {Image, Text, StyleSheet, View, Pressable} from 'react-native';
 
-export default function TaskTile({task}: any) {
+export default function TaskTile({task, onUpdateTask, onDeleteTask}: any) {
+  const {id, title, isCompleted} = task;
+  const onChangeStatus = () => {
+    onUpdateTask(id);
+  };
+  const onChangeIsCompleted = () => {
+    onDeleteTask(id);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.subContainer}>
+      <Pressable onPress={onChangeStatus} style={styles.subContainer}>
         <Image
           style={styles.check}
-          source={require('../../../assets/icons/circle.png')}
+          source={
+            isCompleted
+              ? require('../../../assets/icons/checkCircle.png')
+              : require('../../../assets/icons/circle.png')
+          }
         />
-        <Text>{task.title}</Text>
-      </View>
-      <Image
-        style={styles.check}
-        source={require('../../../assets/icons/bin.png')}
-      />
+        <Text>{title}</Text>
+      </Pressable>
+      <Pressable onPress={onChangeIsCompleted}>
+        <Image
+          style={styles.check}
+          source={require('../../../assets/icons/bin.png')}
+        />
+      </Pressable>
     </View>
   );
 }
