@@ -6,9 +6,12 @@ import TaskForm from './TaskForm';
 import {Task} from '../../types/task';
 import FloatingButton from '../../components/FloatingButton/FloatingButton';
 import Counter from '../../components/common/Counter';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../../store/store';
+import {addTask, deleteTask, updateTask} from './slice/TasksSlice';
 
 export default function TaskScreen() {
-  const [tasks, setTasks] = useState([
+  /*const [tasks, setTasks] = useState([
     {
       id: 1,
       title: 'Hello world!',
@@ -19,40 +22,20 @@ export default function TaskScreen() {
       title: 'Hello world 2!',
       isCompleted: false,
     },
-  ]);
+  ]);*/
+  const {tasks} = useSelector((state: RootState) => state.tasksList);
+  const tasksDispatch = useDispatch();
   const [toogleFormVisible, setToogleFormVisible] = useState(false);
 
   const onAddTask = (title: string) => {
-    setTasks([...tasks, {id: Date.now(), title, isCompleted: false}]);
+    tasksDispatch(addTask(title));
   };
-
   const onUpdateTask = (id: number) => {
-    const newTasks: SetStateAction<Task[]> = [];
-    tasks.forEach(task => {
-      if (task.id !== id) {
-        newTasks.push(task);
-        return;
-      } else {
-        newTasks.push({
-          id,
-          title: task.title,
-          isCompleted: !task.isCompleted,
-        });
-      }
-    });
-    setTasks(newTasks);
+    tasksDispatch(updateTask(id));
   };
 
   const onDeleteTask = (id: number) => {
-    const newTasks: Task[] = [];
-    tasks.forEach(({id: taskId, title, isCompleted}) => {
-      if (id !== taskId) {
-        newTasks.push({id: taskId, title, isCompleted});
-      } else {
-        return;
-      }
-    });
-    setTasks(newTasks);
+    tasksDispatch(deleteTask(id));
   };
 
   const changeToogleForm = () => setToogleFormVisible(!toogleFormVisible);

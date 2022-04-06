@@ -21,7 +21,9 @@ export default function TaskTile({task, onUpdateTask, onDeleteTask}: any) {
               : require('../../../assets/icons/circle.png')
           }
         />
-        <Text>{title}</Text>
+        <Text style={isCompleted ? styles.textDisabled : styles.text}>
+          {title}
+        </Text>
       </Pressable>
       <Pressable onPress={onChangeIsCompleted}>
         <Image
@@ -51,5 +53,11 @@ export const styles = StyleSheet.create({
   check: {
     width: 30,
     height: 30,
+  },
+  text: {
+    color: 'black',
+  },
+  textDisabled: {
+    color: 'grey',
   },
 });
